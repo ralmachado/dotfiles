@@ -90,29 +90,15 @@ if [ ! -f "$CARGOENV" ]; then
 fi
 source $CARGOENV
 
-# Ensure cargo-binstall present
-if ! command -v cargo-binstall &> /dev/null; then
-  cargo install cargo-binstall
-fi
-
 # Source pipx completions
 # autoload -U bashcompinit
 # bashcompinit
 # eval "$(register-python-argcomplete pipx)"
 
-# Zoxide setup
-if ! command -v zoxide &> /dev/null; then
-  cargo-binstall zoxide -y
-fi
-source <(zoxide init zsh --cmd cd)
+command -v zoxide &> /dev/null && source <(zoxide init zsh --cmd cd)
 
 # FZF setup
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# yazi
-if ! command -v yazi &> /dev/null; then
-  cargo-binstall yazi-fm yazi-cli -y
-fi
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
@@ -123,11 +109,7 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-# Other tools
-if ! command -v dust &> /dev/null; then
-  cargo-binstall du-dust -y
-fi
-
-if ! command -v eza &> /dev/null; then
-  cargo-binstall eza -y
+# Ensure tpm is installed
+if [ ! -d "$HOME/.config/tmux/plugins/tpm" ]; then
+  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 fi
