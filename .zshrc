@@ -1,101 +1,128 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Add ~.local/bin to path
+export PATH=/home/rodrigo/.local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="/home/bitl0ck/.oh-my-zsh"
+# Set neovim as default text editor
+export EDITOR="nvim"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# Set zinit dir
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+if [ ! -d "$ZINIT_HOME" ]; then
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+source "$ZINIT_HOME/zinit.zsh"
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# Load zsh plugins
+zinit wait lucid light-mode for \
+  dominik-schwabe/zsh-fnm \
+  Aloxaf/fzf-tab \
+  zsh-users/zsh-syntax-highlighting \
+  Tarrasch/zsh-bd \
+  OMZP::colored-man-pages \
+  OMZP::command-not-found \
+  OMZP::sudo \
+  OMZP::eza \
+  OMZP::git \
+  mattberther/zsh-pyenv \
+  _local/omp-completions \
+  _local/pipx-completions \
+  as"completion" \
+    OMZP::docker/completions/_docker \
+  atinit"zicompinit; zicdreplay" \
+    zsh-users/zsh-completions \
+    OMZP::docker-compose \
+    OMZP::docker \
+  atload'_zsh_autosuggest_start' \
+    zsh-users/zsh-autosuggestions
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+# Load oh-my-posh
+if ! command -v oh-my-posh &> /dev/null; then
+  bash <(curl -s https://ohmyposh.dev/install.sh) -d ~/.local/bin -t ~/.cache/oh-my-posh/themes
+fi
+eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/gentoo.yaml)"
 
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# Force emacs keybindings
+bindkey -e
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
+# Completions and env imports
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu no
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+# Alias
+alias bp="vim ~/.zshrc"
+alias sa='source ~/.zshrc; echo ".zshrc reloaded"'
+alias vimrc="vim ~/.config/nvim/init.lua"
+alias vim="nvim"
+alias yt="yt-dlp"
+alias yta="yt-dlp -x"
+alias flatup="flatpak upgrade"
+alias flatin="flatpak install"
+alias flatun="flatpak uninstall"
+alias omp="oh-my-posh"
+alias ompup="bash <(curl -s https://ohmyposh.dev/install.sh) -d ~/.local/bin -t ~/.cache/oh-my-posh/themes"
 
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+# Source cargo
+CARGOENV=$HOME/.cargo/env
+if [ ! -f "$CARGOENV" ]; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
+source $CARGOENV
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+# Ensure cargo-binstall present
+if ! command -v cargo-binstall &> /dev/null; then
+  cargo install cargo-binstall
+fi
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
-# COMPLETION_WAITING_DOTS="true"
+# Source pipx completions
+# autoload -U bashcompinit
+# bashcompinit
+# eval "$(register-python-argcomplete pipx)"
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+# Zoxide setup
+if ! command -v zoxide &> /dev/null; then
+  cargo-binstall zoxide -y
+fi
+source <(zoxide init zsh --cmd cd)
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+# FZF setup
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# yazi
+if ! command -v yazi &> /dev/null; then
+  cargo-binstall yazi-fm yazi-cli -y
+fi
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
 
-source $ZSH/oh-my-zsh.sh
+# Other tools
+if ! command -v dust &> /dev/null; then
+  cargo-binstall du-dust -y
+fi
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+if ! command -v eza &> /dev/null; then
+  cargo-binstall eza -y
+fi
