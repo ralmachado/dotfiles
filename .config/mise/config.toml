@@ -1,0 +1,19 @@
+[settings]
+experimental = true
+
+[tools]
+python = "latest"
+node = "lts"
+"cargo:cargo-binstall" = "latest"
+"cargo:cargo-cache" = "latest"
+"cargo:du-dust" = "latest"
+"cargo:yazi-cli" = "latest"
+"cargo:yazi-fm" = "latest"
+"cargo:zoxide" = "latest"
+"cargo:eza" = "latest"
+"cargo:ripgrep" = "latest"
+"pipx:pipenv" = "latest"
+"pipx:streamlink" = "latest"
+"pipx:streamrip" = "latest"
+"pipx:subliminal" = "latest"
+"pipx:yt-dlp" = "latest"

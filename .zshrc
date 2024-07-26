@@ -16,7 +16,6 @@ source "$ZINIT_HOME/zinit.zsh"
 
 # Load zsh plugins
 zinit wait lucid light-mode for \
-  dominik-schwabe/zsh-fnm \
   Aloxaf/fzf-tab \
   zsh-users/zsh-syntax-highlighting \
   Tarrasch/zsh-bd \
@@ -25,7 +24,6 @@ zinit wait lucid light-mode for \
   OMZP::sudo \
   OMZP::eza \
   OMZP::git \
-  mattberther/zsh-pyenv \
   _local/omp-completions \
   _local/pipx-completions \
   as"completion" \
@@ -77,6 +75,13 @@ alias flatin="flatpak install"
 alias flatun="flatpak uninstall"
 alias omp="oh-my-posh"
 alias ompup="bash <(curl -s https://ohmyposh.dev/install.sh) -d ~/.local/bin -t ~/.cache/oh-my-posh/themes"
+
+# Ensure mise is installed
+if ! command -v mise &> /dev/null; then
+  curl https://mise.jdx.dev/mise-latest-linux-x64 > ~/.local/bin/mise
+  chmod +x ~/.local/bin/mise
+fi
+eval "$(~/.local/bin/mise activate zsh)"
 
 # Source cargo
 CARGOENV=$HOME/.cargo/env
