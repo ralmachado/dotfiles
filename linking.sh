@@ -1,14 +1,8 @@
 #!/bin/bash
 
 # .dotfiles
-ln -fs ~/.dotfiles/.bashrc ~/.bashrc
-ln -fs -s ~/.dotfiles/.vimrc ~/.vimrc
-ln -fs ~/.dotfiles/.zshrc ~/.zshrc
-if [[ ! "$(uname -r)" =~ ".*WSL2$" ]]; then
-    ln -fs ~/.dotfiles/wsl2/.gitconfig ~/.gitconfig;
-else
-    ln -fs ~/.dotfiles/.gitconfig ~/.gitconfig;
-fi
+# ln -fs ~/.dotfiles/.vimrc ~/.vimrc
+ln -fs $PWD/.zshrc ~/.zshrc
+ln -fs $PWD/.gitconfig ~/.gitconfig;
+mkdir -p ~/.config/nvim && ln -fs $PWD/init.lua ~/.config/nvim/init.lua
 
-# .dotfiles/oh-my-zsh
-ln -fs ~/.dotfiles/.oh-my-zsh/oh-my-zsh.sh ~/.oh-my-zsh/oh-my-zsh.sh
