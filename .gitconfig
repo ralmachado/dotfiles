@@ -1,5 +1,8 @@
 [user]
 	name = Rodrigo Machado
-	email = 29443508+denioma@users.noreply.github.com
-[credential]
-	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+	email = 29443508+ralmachado@users.noreply.github.com
+[core]
+	autocrlf = input
+	editor = nvim
+[init]
+	defaultBranch = main
