@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+#upgrade:
+  #auto: true
+
+console_title_template: "{{ .UserName }}@{{ .HostName }} {{ .Shell }} in {{ .Folder }}"
+
+transient_prompt:
+  template: "$ "
+  foreground: green
+  background: transparent
+  foreground_templates:
+  - "{{ if gt .Code 0 }}red{{ end }}"
+
+blocks:
+- type: rprompt
+  segments:
+  - template: "<b>{{if not .Error}}\U000f0079 {{.Percentage}}%{{end}}</b> "
+    foreground: yellow
+    type: battery
+    style: plain
+  - template: <b>{{.CurrentDate | date .Format}}</b>
+    foreground: blue
+    background: transparent
+    type: time
+    style: plain
+- type: prompt
+  alignment: left
+  segments:
+  - properties:
+      display_mode: environment
+    template: "({{ .Venv }}) "
+    foreground: yellow
+    type: python
+    style: plain
+  - template: "<b>{{ .UserName }}@{{ .HostName }}</b> "
+    foreground: lightGreen
+    background: transparent
+    type: text
+    style: plain
+  - properties:
+      style: full
+    template: "<b>{{.Path}}</b> "
+    foreground: blue
+    background: transparent
+    type: path
+    style: plain
+  - properties:
+      branch_icon: ""
+      commit_icon: "@"
+      fetch_status: true
+      fetch_upstream_icon: true
+    template: "{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed)}}*{{ end }} <cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>"
+    foreground: darkGray
+    background: transparent
+    type: git
+    style: plain
+- type: prompt
+  alignment: left
+  newline: true
+  segments:
+  - template: "{{ if .Env.TMUX }}(tmux) {{ end }}$"
+    foreground: lightGreen
+    background: transparent
+    type: text
+    style: plain
+    foreground_templates:
+    - "{{ if gt .Code 0 }}red{{ end }}"
+version: 3
+final_space: true
+enable_cursor_positioning: true

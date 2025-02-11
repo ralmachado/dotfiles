@@ -1,0 +1,7 @@
+[settings]
+experimental = true
+
+[tools]
+python = "latest"
+node = "lts"
+usage = "latest"

@@ -1,0 +1,32 @@
+def_key "j"
+  scroll_down
+def_key "k"
+  scroll_up
+def_key "h"
+  previous_column
+def_key "l"
+  next_column
+
+def_key "J"
+  move_selected_items_down
+def_key "K"
+  move_selected_items_up
+
+def_key "/"
+  find
+def_key "/"
+  find_item_forward
+def_key "n"
+  next_found_item
+def_key "N"
+  previous_found_item
+
+def_key "="
+  volume_up
+def_key ")"
+  volume_down
+
+def_key "+"
+  show_clock
+def_key "."
+  show_lyrics

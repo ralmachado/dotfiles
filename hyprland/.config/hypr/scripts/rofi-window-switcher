@@ -1,0 +1,5 @@
+#!/bin/bash
+
+selection=$(hyprctl clients -j | jq -r ".[].title" | rofi -dmenu)
+
+hyprctl dispatch focuswindow "title:($selection)"

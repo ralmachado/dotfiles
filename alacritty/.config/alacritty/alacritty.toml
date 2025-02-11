@@ -1,0 +1,15 @@
+import = [ 
+  "~/.config/alacritty/themes/themes/enfocado_dark.toml" 
+  # "~/.config/alacritty/base16-alacritty/colors/base16-unikitty-dark-256.toml" 
+]
+
+#[shell]
+#program = "/usr/bin/zsh"
+#args = ["-i", "-c", "tmux"]
+
+[window]
+resize_increments = true
+opacity = 0.85
+
+[font]
+normal.family = "monospace"
