@@ -1,7 +1,25 @@
 [settings]
 experimental = true
+python.uv_venv_auto = true
 
 [tools]
-python = "latest"
+cargo-binstall = "latest"
+dust = "latest"
+eza = "latest"
+fd = "latest"
 node = "lts"
+python = "latest"
+ripgrep = "latest"
+ruff = "latest"
 usage = "latest"
+uv = "latest"
+yazi = "latest"
+zoxide = "latest"
+yt-dlp = "latest"
+"cargo:rmpc" = "latest"
+"pipx:smassh" = "latest"
+"pipx:ranger-fm" = { version = "latest", uvx_args = "--with pillow" }
+"pipx:streamrip" = "latest"
+"pipx:git+https://github.com/Diaoul/subliminal.git" = "latest"
+"pipx:spotify-to-ytmusic" = "latest"
+"pipx:pipenv" = "latest"
