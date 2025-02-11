@@ -37,7 +37,6 @@ source "$ZCOMET_HOME/zcomet.zsh"
 
 # Load zsh plugins
 zcomet load Aloxaf/fzf-tab
-zcomet load Tarrasch/zsh-bd
 zcomet load ohmyzsh plugins/command-not-found
 zcomet load ohmyzsh plugins/sudo
 zcomet load ohmyzsh plugins/eza
@@ -45,11 +44,12 @@ zcomet load ohmyzsh plugins/git
 zcomet load ohmyzsh plugins/dnf
 zcomet load ohmyzsh plugins/fzf
 zcomet load ohmyzsh plugins/docker-compose
-zcomet load zsh-users/zsh-syntax-highlighting
-zcomet load zsh-users/zsh-autosuggestions
 zcomet fpath zsh-users/zsh-completions src
 zcomet trigger --no-submodules archive unarchive lsarchive \
     sorin-ionescu/prezto modules/archive
+zcomet trigger bd Tarrasch/zsh-bd
+zcomet load zsh-users/zsh-syntax-highlighting
+zcomet load zsh-users/zsh-autosuggestions
 zcomet compinit
 
 # Load oh-my-posh
@@ -155,7 +155,7 @@ update() {
   command -v apt &> /dev/null && sudo apt update && sudo apt upgrade
   command -v dnf &> /dev/null && sudo dnf upgrade
   command -v flatpak &> /dev/null && flatpak update
-  command -v pipx &> /dev/null && pipx upgrade-all
+  command -v mise &> /dev/null && mise self-update && mise up
   command -v cargo-install-update &> /dev/null && cargo install-update -a
 }
 
