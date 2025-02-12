@@ -1,6 +1,6 @@
-# Add latest wine-staging-tkg to path
-
 source $HOME/.config/user-dirs.dirs
+
+eval `keychain --eval --agents ssh id_ed25519`
 
 # Add ~.local/bin to path
 export PATH=/home/rodrigo/.local/bin:$PATH
