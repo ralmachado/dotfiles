@@ -12,7 +12,7 @@ return {
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
-      options = { theme = "codedark" },
+      options = { theme = "auto" },
       extensions = { "nvim-tree", "fugitive", "lazy", "mason", "trouble" }
     },
     init = function()
