@@ -38,54 +38,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
-
-require('lazy').setup({
-  { 
-    'nvim-tree/nvim-tree.lua', 
-    opts = {
-      update_cwd = true,
-    }
-  },
-  'nvim-tree/nvim-web-devicons', 
-  { 
-    'ryanoasis/vim-devicons',
-    dependencies = {
-	    {
-        'vim-airline/vim-airline',
-        init = function()
-          vim.g.airline_powerline_fonts = 1
-          vim.g.airline_theme = 'minimalist'
-        end
-	    },
-      'ctrlpvim/ctrlp.vim',
-    }
-  },
-  {
-    'Mofiqul/vscode.nvim',
-    opts = {
-      transparent = true,
-      disable_nvimtree_bg = true
-    }
-  },
-  'vim-airline/vim-airline-themes',
-  'tiagofumo/vim-nerdtree-syntax-highlight',
-  'tpope/vim-fugitive',
-  'scrooloose/nerdcommenter',
-  'flazz/vim-colorschemes',
-  'sainnhe/sonokai',
-  'neovim/nvim-lspconfig',
-  'williamboman/mason.nvim',
-  'ms-jpq/coq_nvim',
-  'folke/trouble.nvim',
-  'wesQ3/vim-windowswap'
-})
-
--- Colorscheme
-vim.cmd('colorscheme vscode')
+require("lazy").setup("plugins")
 
 -- LSP config
-require('mason').setup()
-local lsp = require('lspconfig')
-local coq = require('coq')
-lsp.basedpyright.setup(coq.lsp_ensure_capabilities())
-
+require('lspconfig').ruff.setup {}
+require('lspconfig').basedpyright.setup {
+  settings = {
+    basedpyright = {
+      disableOrganizeImports = true,
+      analysis = {
+        ignore = { '*' },
+      },
+    },
+  },
+}
