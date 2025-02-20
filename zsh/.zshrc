@@ -1,19 +1,8 @@
-source $HOME/.config/user-dirs.dirs
-
-eval `keychain --eval --agents ssh id_ed25519`
-
 # Add ~.local/bin to path
-export PATH=/home/rodrigo/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 
 # Set neovim as default text editor
 export EDITOR="nvim"
-
-# Source cargo
-CARGOENV=$HOME/.cargo/env
-if [ ! -f "$CARGOENV" ]; then
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-fi
-source $CARGOENV
 
 # Ensure mise is installed
 if ! command -v mise &> /dev/null; then
@@ -21,9 +10,6 @@ if ! command -v mise &> /dev/null; then
   chmod +x ~/.local/bin/mise
 fi
 eval "$(mise activate zsh)"
-
-# Include local completions
-fpath=( ~/.config/zsh/site-functions $fpath)
 
 # Set zcomet dir
 ZCOMET_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zcomet"
@@ -84,24 +70,15 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 alias bp="vim ~/.zshrc"
 alias sa='source ~/.zshrc; echo ".zshrc reloaded"'
 alias vimrc="vim ~/.config/nvim/init.lua"
-alias vim="nvim"
 alias yt="yt-dlp"
 alias yta="yt-dlp -x"
-alias flatup="flatpak upgrade"
-alias flatin="flatpak install"
-alias flatun="flatpak uninstall"
 alias omp="oh-my-posh"
 alias ompup="bash <(curl -s https://ohmyposh.dev/install.sh) -d ~/.local/bin -t ~/.cache/oh-my-posh/themes"
 alias incognito="unset HISTFILE"
-alias lz="la -Z"
 command -v bat &> /dev/null && alias cat="bat"
 command -v batman &> /dev/null && alias man="batman"
 
 # Complex aliases
-function dict() {
-  command dict "$@" | less -R
-}
-
 function cheat() {
   curl -s https://cht.sh/"$@" | less -R
 }
@@ -158,5 +135,3 @@ update() {
   command -v mise &> /dev/null && mise self-update && mise up
   command -v cargo-install-update &> /dev/null && cargo install-update -a
 }
-
-eval "$(register-python-argcomplete /usr/lib/python3.13/site-packages/legion_linux/legion_cli.py)"
