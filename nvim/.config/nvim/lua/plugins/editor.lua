@@ -7,15 +7,6 @@ return {
     opts = {}
   },
   
-  -- Show indent lines in code
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    ---@module "ibl"
-    ---@type ibl.config
-    opts = {},
-  },
-
   -- Code diagnostics
   { 
     "folke/trouble.nvim", 
@@ -92,7 +83,8 @@ return {
       { "]t", function() require("todo-comments").jump_next() end, desc = "TODO Comments: Next" },
       { "[t", function() require("todo-comments").jump_prev() end, desc = "TODO Comments: Next" },
       { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Trouble: Toggle TODO" },
-      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Telescope: TODO comments" },
+      { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "Picker: TODO comments" },
+      { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Picker: TODO/FIX/FIXME" },
     },
   },
 }
