@@ -1,17 +1,37 @@
 return {
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = { 
-      "nvim-lua/plenary.nvim",
-
-      -- Plugins
-      "tsakirist/telescope-lazy.nvim",
-    },
-    cmd = "Telescope",
-    keys = {
-      {"<C-p>", "<cmd>Telescope find_files<cr>", desc = "Telescope: Find files"},
-      {"<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Telescope: Live grep"},
-      {"<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Telescope: Buffers"},
-    }
-  }
+  -- {
+  --   "nvim-telescope/telescope.nvim",
+  --   version = "*",
+  --   dependencies = { 
+  --     "nvim-lua/plenary.nvim",
+  --
+  --     -- Plugins
+  --     "tsakirist/telescope-lazy.nvim",
+  --   },
+  --   cmd = "Telescope",
+  --   keys = {
+  --     {"<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Telescope: Find files"},
+  --     {"<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Telescope: Live grep"},
+  --     {"<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Telescope: Buffers"},
+  --   },
+  --   opts = {
+  --     pickers = {
+  --       find_files = {
+  --         -- Follow symlinks
+  --         follow = true,
+  --       },
+  --       live_grep = {
+  --         -- Follow symlinks
+  --         additional_args = { "--follow" }
+  --       }
+  --     },
+  --   },
+  -- },
+  -- {
+  --   "nvim-telescope/telescope-frecency.nvim",
+  --   version = "*",
+  --   config = function()
+  --     require("telescope").load_extension "frecency"
+  --   end,
+  -- }
 }

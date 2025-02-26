@@ -1,5 +1,9 @@
 return {
-  "tpope/vim-fugitive",
-  "wesQ3/vim-windowswap",
-  "tpope/vim-repeat",
+  { "folke/lazy.nvim", version = "*" },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {},
+  }
 }
