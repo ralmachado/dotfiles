@@ -9,6 +9,26 @@ return {
   },
   { "neovim/nvim-lspconfig" },
 
+  -- LuaSnip
+  {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    build = "make install_jsregexp",
+    dependencies = {
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+          require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
+        end,
+      },
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+    },
+  },
+
   -- Code completion
   {
     "hrsh7th/nvim-cmp",
@@ -16,15 +36,18 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "micangl/cmp-vimtex",
       "onsails/lspkind.nvim",
       "lukas-reineke/cmp-under-comparator",
+      "saadparwaiz1/cmp_luasnip",
     },
     event = "InsertEnter",
     config = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
       local lspconfig = require("lspconfig")
-      cmp.setup({
+      local ls = require("luasnip")
+      cmp.setup {
         sorting = {
           comparators = {
               cmp.config.compare.offset,
@@ -44,10 +67,12 @@ return {
         },
         snippet = {
           expand = function(args)
-            vim.snippet.expand(args.body)
+            ls.lsp_expand(args.body)
           end
         },
         sources = cmp.config.sources({
+          { name = "luasnip" },
+          { name = "vimtex" },
           { name = "nvim_lsp" },
           { name = "buffer" },
           { name = "path" },
@@ -57,13 +82,39 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm({ select = True }),
+          ["<CR>"] = cmp.mapping(function(fallback)
+            if ls.expand_or_locally_jumpable() then
+              ls.expand_or_jump()
+            elseif cmp.visible() then
+              cmp.confirm({ select = true })
+            else
+              fallback()
+            end
+          end),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif ls.locally_jumpable(1) then
+              ls.jump(1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif ls.locally_jumpable(-1) then
+              ls.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
         },
-        sorting
-      })
+      }
 
       -- LSP setup
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      lspconfig.texlab.setup { capabilities = capabilities }
       lspconfig.ruff.setup { capabilities = capabilities }
       lspconfig.basedpyright.setup { 
         settings = {

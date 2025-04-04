@@ -1,6 +1,7 @@
 return {
   {
     "snacks.nvim",
+    enabled = true,
     opts = {
       picker = {},
       image = {},

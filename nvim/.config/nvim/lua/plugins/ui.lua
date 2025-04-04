@@ -37,6 +37,7 @@ return {
       { "<leader>bP", "<cmd>BufferLineGroupClose unpinned<cr>", desc = "BufferLine: Close unpinned" },
       { "<leader>br", "<cmd>BufferLineCloseRight<cr>", desc = "BufferLine: Close buffers to the right" },
       { "<leader>bl", "<cmd>BufferLineCloseLeft<cr>", desc = "BufferLine: Close buffers to the left" },
+      { "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", desc = "BufferLine: Close other buffers" },
       { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "BufferLine: Prev buffer" },
       { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "BufferLine: Next buffer" },
       { "<[b>", "<cmd>BufferLineCyclePrev<cr>", desc = "BufferLine: Prev buffer" },
