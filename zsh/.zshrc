@@ -32,7 +32,6 @@ fpath=( ~/.zcomet/cache/completions ~/.config/zsh/site-functions $fpath )
 ZOXIDE_CMD_OVERRIDE="cd"
 
 # Load zsh plugins
-zcomet load ohmyzsh plugins/profiles
 zcomet load ohmyzsh plugins/mise
 zcomet load ohmyzsh plugins/aliases
 zcomet load ohmyzsh plugins/command-not-found
@@ -48,6 +47,7 @@ zcomet fpath zsh-users/zsh-completions src
 zcomet trigger --no-submodules archive unarchive lsarchive \
     sorin-ionescu/prezto modules/archive
 zcomet trigger bd Tarrasch/zsh-bd
+zcomet load ohmyzsh plugins/profiles
 zcomet load zsh-users/zsh-syntax-highlighting
 zcomet load zsh-users/zsh-autosuggestions
 zcomet compinit
