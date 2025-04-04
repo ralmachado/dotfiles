@@ -1,49 +1,49 @@
-source $HOME/.config/user-dirs.dirs
-
-eval `keychain --eval --agents ssh id_ed25519`
-
 # Add ~.local/bin to path
-export PATH=/home/rodrigo/.local/bin:$PATH
+export PATH="${XDG_DATA_HOME:-$HOME}/.local/bin:$PATH"
 
 # Set neovim as default text editor
 export EDITOR="nvim"
 
-# Source cargo
-CARGOENV=$HOME/.cargo/env
-if [ ! -f "$CARGOENV" ]; then
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-fi
-source $CARGOENV
-
-# Ensure mise is installed
+# Ensure mise is installed, activated through zcomet
 if ! command -v mise &> /dev/null; then
   curl https://mise.jdx.dev/mise-latest-linux-x64 > ~/.local/bin/mise
   chmod +x ~/.local/bin/mise
 fi
-eval "$(mise activate zsh)"
-
-# Include local completions
-fpath=( ~/.config/zsh/site-functions $fpath)
 
 # Set zcomet dir
 ZCOMET_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zcomet"
 
+# Ensure zcomet is installed
 if [ ! -f "$ZCOMET_HOME/zcomet.zsh" ]; then
   mkdir -p "$(dirname $ZCOMET_HOME)"
   git clone https://github.com/agkozak/zcomet.git "$ZCOMET_HOME"
 fi
-
 source "$ZCOMET_HOME/zcomet.zsh"
 
+# Enable ohmyzsh plugin support
+export ZSH="${XDG_DATA_HOME:-${HOME}}/.zcomet"
+export ZSH_CUSTOM="${ZSH}/custom"
+export ZSH_CACHE_DIR="${ZSH}/cache"
+
+# Include completions
+fpath=( ~/.zcomet/cache/completions ~/.config/zsh/site-functions $fpath )
+
+# Config plugins
+ZOXIDE_CMD_OVERRIDE="cd"
+
 # Load zsh plugins
-zcomet load Aloxaf/fzf-tab
+zcomet load ohmyzsh plugins/profiles
+zcomet load ohmyzsh plugins/mise
+zcomet load ohmyzsh plugins/aliases
 zcomet load ohmyzsh plugins/command-not-found
-zcomet load ohmyzsh plugins/sudo
 zcomet load ohmyzsh plugins/eza
-zcomet load ohmyzsh plugins/git
-zcomet load ohmyzsh plugins/dnf
 zcomet load ohmyzsh plugins/fzf
-zcomet load ohmyzsh plugins/docker-compose
+zcomet load ohmyzsh plugins/gh
+zcomet load ohmyzsh plugins/git
+zcomet load ohmyzsh plugins/sudo
+zcomet load ohmyzsh plugins/uv
+zcomet load ohmyzsh plugins/zoxide
+zcomet load Aloxaf/fzf-tab
 zcomet fpath zsh-users/zsh-completions src
 zcomet trigger --no-submodules archive unarchive lsarchive \
     sorin-ionescu/prezto modules/archive
@@ -53,7 +53,7 @@ zcomet load zsh-users/zsh-autosuggestions
 zcomet compinit
 
 # Load oh-my-posh
-if ! command -v oh-my-posh &> /dev/null; then
+if [ ! -f "$HOME/.local/bin/oh-my-posh" ]; then
   bash <(curl -s https://ohmyposh.dev/install.sh) -d ~/.local/bin -t ~/.cache/oh-my-posh/themes
 fi
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/gentoo.yaml)"
@@ -76,14 +76,14 @@ bindkey -e
 
 # Completions and env imports
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' menu no
-zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -TL2 --color=always $realpath'
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
-# Alias
-alias bp="vim ~/.zshrc"
-alias sa='source ~/.zshrc; echo ".zshrc reloaded"'
-alias vimrc="vim ~/.config/nvim/init.lua"
+# Aliases
+alias zcfg="nvim ~/.zshrc"
+alias vimrc="nvim ~/.config/nvim/init.lua"
 alias vim="nvim"
 alias yt="yt-dlp"
 alias yta="yt-dlp -x"
@@ -109,13 +109,6 @@ function cheat() {
 function weather() {
   curl https://wttr.in/"$@"
 }
-
-command -v zoxide &> /dev/null && source <(zoxide init zsh --cmd cd)
-
-# Use fd with fzf
-export FZF_DEFAULT_COMMAND="fd --type file --hidden --exclude .git --color=always"
-export FZF_DEFAULT_OPTS="--ansi"
-export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
@@ -149,6 +142,7 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
   alias ssh="kitten ssh"
   alias icat="kitten icat"
   alias diff="kitten diff"
+  alias clip="kitten clipboard"
 fi
 
 update() {
@@ -160,3 +154,29 @@ update() {
 }
 
 eval "$(register-python-argcomplete /usr/lib/python3.13/site-packages/legion_linux/legion_cli.py)"
+
+# Configure fzf
+export FZF_DEFAULT_COMMAND="fd --type file --follow --hidden --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS="--layout reverse --style minimal --no-height"
+export FZF_CTRL_T_OPTS="--walker-skip .git --preview 'fzf-preview.sh {}'"
+export FZF_ALT_C_OPTS="--preview 'eza -TL2 --color=always {}'"
+export FZF_COMPLETION_DIR_OPTS="--walker dir,follow"
+
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)  fzf --preview "eza -TL2 --color=always {}" "$@" ;;
+    ssh) fzf --preview "dig {}"                     "$@" ;;
+    *)   fzf --preview "fzf-preview.sh {}"          "$@" ;;
+  esac
+}
+
+# bitwarden-cli aliases
+bwunlock() {
+  export BW_SESSION=$(bw unlock --raw)
+}
+
+alias bwlock="unset BW_SESSION"
