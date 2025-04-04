@@ -153,8 +153,6 @@ update() {
   command -v cargo-install-update &> /dev/null && cargo install-update -a
 }
 
-eval "$(register-python-argcomplete /usr/lib/python3.13/site-packages/legion_linux/legion_cli.py)"
-
 # Configure fzf
 export FZF_DEFAULT_COMMAND="fd --type file --follow --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
