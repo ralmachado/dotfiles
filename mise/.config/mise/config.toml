@@ -26,3 +26,4 @@ zoxide = "latest"
 "pipx:git+https://github.com/ranger/ranger.git" = { version = "master", uvx_args = "--with pillow" }
 "pipx:git+https://github.com/nathom/streamrip.git" = "dev"
 "pipx:git+https://github.com/Diaoul/subliminal.git" = "latest"
+python = "3.13.2"
