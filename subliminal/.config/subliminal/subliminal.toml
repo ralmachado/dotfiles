@@ -1,0 +1,7 @@
+[provider.opensubtitles]
+username = "Etaia2000"
+password = "Fg5^3%w99PEe"
+
+[download]
+language = ["pt", "en"]
+verbose = 3
