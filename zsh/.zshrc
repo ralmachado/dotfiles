@@ -1,13 +1,12 @@
 # Add ~.local/bin to path
-export PATH="${XDG_DATA_HOME:-$HOME}/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # Set neovim as default text editor
 export EDITOR="nvim"
 
 # Ensure mise is installed, activated through zcomet
-if ! command -v mise &> /dev/null; then
-  curl https://mise.jdx.dev/mise-latest-linux-x64 > ~/.local/bin/mise
-  chmod +x ~/.local/bin/mise
+if [ ! -f $HOME/.local/bin/mise ]; then
+  curl https://mise.run | sh
 fi
 
 # Set zcomet dir
@@ -21,7 +20,7 @@ fi
 source "$ZCOMET_HOME/zcomet.zsh"
 
 # Enable ohmyzsh plugin support
-export ZSH="${XDG_DATA_HOME:-${HOME}}/.zcomet"
+export ZSH="$HOME/.zcomet"
 export ZSH_CUSTOM="${ZSH}/custom"
 export ZSH_CACHE_DIR="${ZSH}/cache"
 
