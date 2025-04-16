@@ -373,7 +373,7 @@ visualizer_spectrum_hz_max = 20000
 #
 ## Available values: classic, alternative.
 ##
-user_interface = alternative
+user_interface = classic
 #
 #data_fetching_delay = yes
 #
@@ -404,7 +404,6 @@ media_library_primary_tag = album_artist
 #
 #cyclic_scrolling = no
 #
-lyrics_fetchers = azlyrics, genius, musixmatch, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
 #lyrics_fetchers = genius, musixmatch, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
 #
 #follow_now_playing_lyrics = no
@@ -541,7 +540,7 @@ display_bitrate = yes
 #
 #search_engine_default_search_mode = 1
 #
-#external_editor = nano
+external_editor = nvim
 #
 ## Note: set to yes if external editor is a console application.
 ##

@@ -21,9 +21,9 @@ def_key "n"
 def_key "N"
   previous_found_item
 
-def_key "="
+def_key "."
   volume_up
-def_key ")"
+def_key ","
   volume_down
 
 def_key "+"
