@@ -1,4 +1,8 @@
 -- General settings
+--- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_nerwPlugin = 1
+--- General editor settings
 vim.o.encoding = "utf-8"
 vim.o.number = true
 vim.o.wrap = false
@@ -6,24 +10,21 @@ vim.o.tabstop = 2
 vim.o.softtabstop = 2
 vim.o.shiftwidth = 2
 vim.o.expandtab = true
-vim.o.conceallevel = 3
+vim.o.conceallevel = 2
 vim.o.ignorecase = true
 vim.o.smartcase = true
-vim.g.loaded_netrw = 1
-vim.g.loaded_nerwPlugin = 1
 vim.o.termguicolors = true
+--- Change leader
 vim.g.mapleader = ","
 
 -- Keymap settings
 function map(mode, shortcut, command)
   vim.keymap.set(mode, shortcut, command)
 end
-
-map("n", "<SPACE>", ":")
+--- Motion through soft wrap
+map("n", "j", "gj")
+map("n", "k", "gk")
 map("i", "jj", "<ESC>")
-map("", "<F3>", ":NvimTreeToggle<CR>")
-map("n","<leader>n", ":tabn<CR>")
-map("n","<leader>p", ":tabp<CR>")
 
 -- Lazy plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

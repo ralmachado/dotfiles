@@ -14,6 +14,7 @@ return {
     "L3MON4D3/LuaSnip",
     version = "v2.*",
     build = "make install_jsregexp",
+    event = "VeryLazy",
     dependencies = {
       {
         "rafamadriz/friendly-snippets",
@@ -114,7 +115,6 @@ return {
 
       -- LSP setup
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      lspconfig.texlab.setup { capabilities = capabilities }
       lspconfig.ruff.setup { capabilities = capabilities }
       lspconfig.basedpyright.setup { 
         settings = {

@@ -3,9 +3,13 @@ return {
     "snacks.nvim",
     enabled = true,
     opts = {
-      picker = {},
-      image = {},
-      explorer = {},
+      -- picker = {},
+      -- image = {},
+      -- explorer = {
+      --   hidden = true,
+      --   ignored = true,
+      --   exclude = { ".git" },
+      -- },
     },
     keys = {
       -- find

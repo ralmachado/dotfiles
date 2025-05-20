@@ -2,8 +2,33 @@ return {
   "tpope/vim-fugitive",
   "wesQ3/vim-windowswap",
   "tpope/vim-repeat",
+  "tpope/vim-surround",
+
+  -- toggleterm.nvim
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    config = true,
+    cmd = {
+      "ToggleTerm",
+      "TermExec",
+    },
+    keys = {
+      { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm: floating term" },
+      { "<leader>tg", "<cmd>TermExec cmd=lazygit direction=float<cr>", desc = "ToggleTerm: lazygit" },
+    }
+  },
+
+  -- EasyMotion
+  {
+    "easymotion/vim-easymotion",
+    event = "VeryLazy"
+  },
+
+  -- Soft-wrapping toggle
   { 
     "andrewferrier/wrapping.nvim",
+    event = "VeryLazy",
     opts = {}
   },
 
@@ -11,9 +36,12 @@ return {
   {
     "lervag/vimtex",
     init = function()
-      vim.g.vimtex_view_general_viewer = "okular"
-      vim.g.vimtex_view_general_options = "--unique file:@pdf\\#src:@line@tex"
-      vim.g.vimtex_fold_enabled = 1
+      -- PDF viewer: Okular
+      -- vim.g.vimtex_view_general_viewer = "okular"
+      -- vim.g.vimtex_view_general_options = "--unique file:@pdf\\#src:@line@tex"
+      -- PDF viewer: Zathura
+      vim.g.vimtex_view_method = "zathura"
+      vim.g.vimtex_quickfix_open_on_warning = 0
     end
   },
 

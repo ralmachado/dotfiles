@@ -28,6 +28,7 @@ return {
   -- Git gutter signs and hunk edit/commit
   {
     "lewis6991/gitsigns.nvim",
+    event = "VeryLazy",
     opts = {
       on_attach = function(bufnr)
         local gitsigns = require("gitsigns")
@@ -89,5 +90,10 @@ return {
       { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Picker: TODO/FIX/FIXME" },
     },
   },
+
+  -- Rainbow delimiters
+  {
+    "hiphish/rainbow-delimiters.nvim",
+  }
 }
 
