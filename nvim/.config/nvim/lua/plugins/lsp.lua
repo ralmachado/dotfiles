@@ -4,14 +4,13 @@ return {
     "williamboman/mason.nvim",
     opts = {},
     dependencies = {
-        "williamboman/mason-lspconfig.nvim",
+        { 
+          "williamboman/mason-lspconfig.nvim", 
+          opts = {
+            ensure_installed = { "basedpyright", "ruff" },
+          }
+        },
     },
-    config = function()
-      require("mason").setup {}
-      require("mason-lspconfig").setup {
-        ensure_installed = { "basedpyright", "ruff" },
-      }
-    end
   },
 
   -- Code completion
