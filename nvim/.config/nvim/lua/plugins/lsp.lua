@@ -1,40 +1,30 @@
 return {
   -- LSP management
-  { "williamboman/mason.nvim", opts = {} },
   { 
-    "williamboman/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = { "basedpyright", "ruff" },
-    },
-  },
-  { "neovim/nvim-lspconfig" },
-
-  -- LuaSnip
-  {
-    "L3MON4D3/LuaSnip",
-    version = "v2.*",
-    build = "make install_jsregexp",
-    event = "VeryLazy",
+    "williamboman/mason.nvim",
+    opts = {},
     dependencies = {
-      {
-        "rafamadriz/friendly-snippets",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-          require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
-        end,
-      },
+        "williamboman/mason-lspconfig.nvim",
     },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
+    config = function()
+      require("mason").setup {}
+      require("mason-lspconfig").setup {
+        ensure_installed = { "basedpyright", "ruff" },
+      }
+    end
   },
 
   -- Code completion
   {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
+      {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = "make install_jsregexp",
+      },
+      "rafamadriz/friendly-snippets",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "micangl/cmp-vimtex",
@@ -42,12 +32,21 @@ return {
       "lukas-reineke/cmp-under-comparator",
       "saadparwaiz1/cmp_luasnip",
     },
-    event = "InsertEnter",
     config = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
       local lspconfig = require("lspconfig")
       local ls = require("luasnip")
+      
+      -- Setup LuaSnip
+      ls.setup {
+        history = true,
+        delete_check_events = "TextChanged"
+      }
+      
+      -- Setup friendly-snippets
+      require("luasnip.loaders.from_vscode").lazy_load()
+
       cmp.setup {
         sorting = {
           comparators = {
@@ -72,9 +71,8 @@ return {
           end
         },
         sources = cmp.config.sources({
-          { name = "luasnip" },
-          { name = "vimtex" },
           { name = "nvim_lsp" },
+          { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
         }),
@@ -112,21 +110,38 @@ return {
           end, { "i", "s" }),
         },
       }
+    end
+  },
 
-      -- LSP setup
+  -- lspconfig
+  { 
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    config = function()
+      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      lspconfig.ruff.setup { capabilities = capabilities }
-      lspconfig.basedpyright.setup { 
+
+      vim.lsp.enable("ruff")
+      vim.lsp.config("ruff", {
+        capabilities = capabilities
+      })
+      vim.lsp.enable("basedpyright")
+      vim.lsp.config("basedpyright", {
         settings = {
           basedpyright = {
             disableOrganizeImports = True,
             analysis = {
-              ignore = { "*" },
+              diagnosticSeverityOverrides = {
+                reportExplicitAny = "none",
+              },
             },
           },
         },
         capabilities = capabilities,
-      }
+      })
     end
   },
 }
