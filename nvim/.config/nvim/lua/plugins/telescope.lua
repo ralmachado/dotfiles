@@ -55,9 +55,8 @@ return {
           follow = true,
         },
         live_grep = {
-          -- Follow symlinks
-          additional_args = { "--follow" }
-        }
+          additional_args = { "-L" },
+        },
       },
     },
     config = function(_, opts)

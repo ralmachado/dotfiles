@@ -1,8 +1,15 @@
 return {
+  -- zen-mode
+  {
+    "folke/zen-mode.nvim",
+    opts = {}
+  },
+
   -- nvim-tree
   { 
     "nvim-tree/nvim-tree.lua", 
-    lazy = False,
+    enabled = false,
+    lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
       { "<F3>", "<cmd>NvimTreeToggle<cr>", desc = "NvimTree: Toggle" },
@@ -80,8 +87,8 @@ return {
     opts = {
       options = {
         -- Use snacks.nvim bufdelete
-        close_command = function(n) Snacks.bufdelete(n) end,
-        right_mouse_command = function(n) Snacks.bufdelete(n) end,
+        close_command = function(n) MiniBufremove.delete(n) end,
+        right_mouse_command = function(n) MiniBufremove.delete(n) end,
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
         show_tab_indicators = true,
@@ -112,7 +119,7 @@ return {
     opts = {
       bigfile = {},
       quickfile = {},
-      indent = {},
+      -- indent = {},
       input = {},
       notifier = {},
       scope = {},

@@ -1,12 +1,4 @@
 return {
-  -- Automatically close pairs
-  { 
-    "echasnovski/mini.pairs", 
-    event = "VeryLazy",
-    version = "*",
-    opts = {}
-  },
-  
   -- Code diagnostics
   { 
     "folke/trouble.nvim", 
@@ -16,13 +8,6 @@ return {
       { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Trouble: Toggle diagnostics" },
       { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Trouble: Toggle symbols" },
     },
-  },
-
-  -- Comments
-  {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {},
   },
 
   -- Git gutter signs and hunk edit/commit

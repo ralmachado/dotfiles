@@ -1,4 +1,20 @@
 return {
+  -- lsp-signature
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "InsertEnter",
+    opts = {}
+  },
+
+  -- nvim-lightbulb
+  { 
+    "kosayoda/nvim-lightbulb",
+    event = "InsertEnter",
+    opts = {
+      autocmd = { enabled = true }
+    }
+  },
+
   -- LSP management
   { 
     "williamboman/mason.nvim",
@@ -69,45 +85,18 @@ return {
             ls.lsp_expand(args.body)
           end
         },
-        sources = cmp.config.sources({
+        sources = cmp.config.sources {
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
-        }),
+        },
         mapping = cmp.mapping.preset.insert {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping(function(fallback)
-            if ls.expand_or_locally_jumpable() then
-              ls.expand_or_jump()
-            elseif cmp.visible() then
-              cmp.confirm({ select = true })
-            else
-              fallback()
-            end
-          end),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif ls.locally_jumpable(1) then
-              ls.jump(1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif ls.locally_jumpable(-1) then
-              ls.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        },
+        }
       }
     end
   },
@@ -129,18 +118,37 @@ return {
       })
       vim.lsp.enable("basedpyright")
       vim.lsp.config("basedpyright", {
+        capabilities = capabilities,
         settings = {
           basedpyright = {
             disableOrganizeImports = True,
             analysis = {
-              diagnosticSeverityOverrides = {
-                reportExplicitAny = "none",
-              },
+                typeCheckingMode = "basic",
             },
           },
         },
-        capabilities = capabilities,
       })
     end
   },
+
+  -- conform.nvim
+  {
+    'stevearc/conform.nvim',
+    event = { "BufWritePre" },
+    opts = {
+      formatters_by_ft = {
+        python = {
+          -- To fix auto-fixable lint errors.
+          "ruff_fix",
+          -- To run the Ruff formatter.
+          "ruff_format",
+          -- To organize the imports.
+          "ruff_organize_imports",
+        },
+      },
+    },
+    keys = {
+      { "<leader>gw", function() require("conform").format({ async = true }) end, desc = "Format buffer" }
+    }
+  }
 }
