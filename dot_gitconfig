@@ -1,0 +1,16 @@
+[user]
+	name = Rodrigo Machado
+	email = 29443508+ralmachado@users.noreply.github.com
+[core]
+	autocrlf = input
+	editor = nvim
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/rodrigo/.local/share/mise/installs/gh/2.67.0/gh_2.67.0_linux_amd64/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/rodrigo/.local/share/mise/installs/gh/2.67.0/gh_2.67.0_linux_amd64/bin/gh auth git-credential
+[safe]
+	directory = /usr/local/share/reshade-shaders
