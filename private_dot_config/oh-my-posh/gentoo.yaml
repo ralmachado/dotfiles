@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+#upgrade:
+  #auto: true
+
+console_title_template: "{{ .UserName }}@{{ .HostName }} {{ .Shell }} in {{ .Folder }}"
+
+transient_prompt:
+  template: "$ "
+  foreground: green
+  background: transparent
+  foreground_templates:
+  - "{{ if gt .Code 0 }}red{{ end }}"
+
+blocks:
+  - type: prompt
+    alignment: left
+    segments:
+      - type: text
+        style: plain
+        template: "<b>{{ .UserName }}@{{ .HostName }}</b> "
+        foreground: lightGreen
+        background: transparent
+      - type: path
+        style: plain 
+        properties:
+          style: full
+        template: "<b>{{.Path}}</b> "
+        foreground: blue
+        background: transparent
+      - type: git
+        style: plain
+        properties:
+          branch_icon: ""
+          commit_icon: "@"
+          fetch_status: true
+          fetch_upstream_icon: true
+        template: "{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed)}}*{{ end }} <cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>"
+        foreground: darkGray
+        background: transparent
+  - type: prompt
+    alignment: right
+    segments:
+      - type: python
+        style: plain
+        properties:
+          display_mode: environment
+        template: "({{ .Venv }}) "
+        foreground: yellow
+      - type: aws
+        foreground: "#FFA400"
+        template: "[ {{.Profile}}{{if .Region}}@{{.Region}}{{end}}] "
+      # - type: battery
+      #   style: plain
+      #   template: "<b>{{if not .Error}}\U000f0079 {{.Percentage}}%{{end}}</b> "
+      #   foreground: yellow
+      - type: time
+        style: plain
+        template: "[<b>{{.CurrentDate | date .Format}}</b>]"
+        foreground: blue
+        background: transparent
+  - type: prompt
+    alignment: left
+    newline: true
+    segments:
+      - type: text
+        style: plain
+        foreground: lightGreen
+        background: transparent
+        template: "{{ if .Env.TMUX }}(tmux){{ end }}$"
+        foreground_templates:
+        - "{{ if gt .Code 0 }}red{{ end }}"
+version: 3
+final_space: true
+enable_cursor_positioning: true
